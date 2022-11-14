@@ -6,13 +6,12 @@ import store from './store'
 // 引用element
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import {ipcRenderer} from 'electron'
-
-
-
-
 Vue.use(ElementUI);
-Vue.$ipc = ipcRenderer;
+
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// use
+Vue.use(mavonEditor);
 Vue.config.productionTip = false;
 /* eslint-disable no-new */
 const vue = new Vue({

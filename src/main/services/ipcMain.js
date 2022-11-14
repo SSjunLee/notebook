@@ -12,7 +12,7 @@ export default {
     InstallCommand();
     ipcMain.handle('IsUseSysTitle', async () => {
       return IsUseSysTitle
-    })
+    });
     ipcMain.handle('windows-mini', (event, args) => {
       BrowserWindow.fromWebContents(event.sender)?.minimize()
     })

@@ -1,8 +1,22 @@
-import {ipcMain} from  'electron'
+import {ipcMain} from 'electron'
+
+const fs = require("fs");
+const normalHandler = (method) => {
+    return (ev, ...args) => {
+        return new Promise((resolve, reject) => {
+            fs[method](...args, (err, res) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(res);
+                }
+            });
+        })
+    }
+};
+
 
 export default function () {
-    ipcMain.on('my_handle',(ev,r)=>{
-        console.log("my_handle ",r);
-        ev.reply("from-main","this is main")
-    });
+    ipcMain.handle('readdir', normalHandler('readdir'));
+    ipcMain.handle('readFile', normalHandler('readFile'));
 }
