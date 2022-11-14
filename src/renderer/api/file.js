@@ -7,7 +7,6 @@ export const readDir = async (dirname) => {
 
 export const readFile = async (filename) => {
     const res = await ipc.invoke("readFile",filename,"utf8");
-    console.log(res.toString());
     return res.toString();
 };
 

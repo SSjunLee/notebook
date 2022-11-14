@@ -1,19 +1,17 @@
 <template>
-    <div>主页
-        <div>
-            <mavon-editor v-model="data"/>
-        </div>
-        {{dir}}<br/>
+    <div class="main-page">
+        <mavon-editor v-model="data"/>
     </div>
 </template>
 
 <script>
     import {readDir, readFile} from '@/api/file'
+    import {getClientHeight} from '@/util/common'
 
     const rootDir = "D:\\code\\qianduan\\ljn\\notebook";
     const gfilename = "D:\\code\\qianduan\\ljn\\notebook\\README_ZH.md";
     export default {
-        name: "index",
+        name: "mainPage",
         data() {
             return {
                 dir: [],
@@ -28,5 +26,9 @@
 </script>
 
 <style scoped>
+    .main-page{
+        overflow: scroll;
+        height: 50%;
+    }
 
 </style>
