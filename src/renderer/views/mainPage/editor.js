@@ -1,6 +1,6 @@
-import {writeFile, readFile, stat, pathResolve} from '@/api/file'
+import {writeFile, readFile, stat} from '@/api/file'
 import {errorMessage,successMessage} from '@/util/common'
-
+import {pathResolve} from '@/util/path'
 
 export default class Editor {
     workDir = "";

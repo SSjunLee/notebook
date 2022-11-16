@@ -9,7 +9,6 @@
     import {getClientHeight} from '@/util/common'
     import Editor from './editor.js'
 
-    const rootDir = "D:\\code\\qianduan\\ljn\\notebook";
     const gfilename = "D:\\code\\qianduan\\ljn\\notebook\\README_ZH.md";
 
     export default {
@@ -26,7 +25,7 @@
             }
         },
         async mounted() {
-            await this.editor.Open(rootDir,gfilename);
+            await this.editor.Open(this.$store.state.workDir,gfilename);
         }
     }
 </script>

@@ -8,9 +8,11 @@
 
 <script>
   import {installNotification} from "@/util/common"
+  const rootDir = "D:\\code\\qianduan\\ljn\\notebook";
 export default {
     mounted() {
       installNotification(this);
+      this.$store.commit("setWorkDir",rootDir);
     }
 };
 </script>

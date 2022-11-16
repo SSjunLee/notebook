@@ -1,5 +1,5 @@
 import {ipcRenderer} from 'electron'
-import path from 'path'
+
 
 const ipc = ipcRenderer;
 
@@ -22,10 +22,8 @@ export const open = async (filename, flag) => {
     return await ipc.invoke("open", filename, flag);
 };
 
-export const stat = async (path) => {
-    return await ipc.invoke("stat", path);
+export const isDirectory = async (path) => {
+    return await ipc.invoke("isDirectory", path);
 };
 
-export const pathResolve = (...args) => {
-    return path.resolve(...args);
-};
+
