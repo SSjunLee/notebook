@@ -7,7 +7,11 @@
 </template>
 
 <script>
+  import {installNotification} from "@/util/common"
 export default {
+    mounted() {
+      installNotification(this);
+    }
 };
 </script>
 

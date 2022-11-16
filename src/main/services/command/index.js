@@ -4,6 +4,7 @@ const fs = require("fs");
 const normalHandler = (method) => {
     return (ev, ...args) => {
         return new Promise((resolve, reject) => {
+            console.log(...args);
             fs[method](...args, (err, res) => {
                 if (err) {
                     reject(err)
@@ -15,8 +16,18 @@ const normalHandler = (method) => {
     }
 };
 
+const registerNormalHandler = (method) => {
+    ipcMain.handle(method, normalHandler(method));
+};
+
+
+const registerFileMethods = () => {
+    ['open', 'readdir', 'readFile', 'writeFile','stat'].map(method => {
+        registerNormalHandler(method);
+    });
+};
+
 
 export default function () {
-    ipcMain.handle('readdir', normalHandler('readdir'));
-    ipcMain.handle('readFile', normalHandler('readFile'));
+    registerFileMethods();
 }

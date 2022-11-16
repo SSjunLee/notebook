@@ -1,32 +1,38 @@
 <template>
     <div class="main-page">
-        <mavon-editor v-model="data"/>
+        <mavon-editor @save="onSave" v-model="editor.Content"/>
     </div>
 </template>
 
 <script>
     import {readDir, readFile} from '@/api/file'
     import {getClientHeight} from '@/util/common'
+    import Editor from './editor.js'
 
     const rootDir = "D:\\code\\qianduan\\ljn\\notebook";
     const gfilename = "D:\\code\\qianduan\\ljn\\notebook\\README_ZH.md";
+
     export default {
         name: "mainPage",
         data() {
             return {
-                dir: [],
-                data: ""
+                editor: new Editor()
+            }
+        },
+        methods: {
+            async onSave() {
+                console.log("baocun");
+               await this.editor.Save();
             }
         },
         async mounted() {
-            this.dir = await readDir(rootDir);
-            this.data = await readFile(gfilename);
+            await this.editor.Open(rootDir,gfilename);
         }
     }
 </script>
 
 <style scoped>
-    .main-page{
+    .main-page {
         overflow: scroll;
         height: 50%;
     }
