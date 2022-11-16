@@ -1,31 +1,46 @@
 <template>
     <div class="main-page">
-        <mavon-editor @save="onSave" v-model="editor.Content"/>
+        <mavon-editor style="font-size: 20px" fontSize="18px" @save="onSave" v-model="content">
+            <template slot="left-toolbar-before">
+                <button
+                        type="button"
+                        @click="setFontSize"
+                        class="op-icon el-icon-picture-outline-round"
+                        aria-hidden="true"
+                        title="字体设置"
+                ></button>
+            </template>
+        </mavon-editor>
     </div>
 </template>
 
 <script>
-    import {readDir, readFile} from '@/api/file'
-    import {getClientHeight} from '@/util/common'
-    import Editor from './editor.js'
-
     const gfilename = "D:\\code\\qianduan\\ljn\\notebook\\README_ZH.md";
-
     export default {
         name: "mainPage",
-        data() {
-            return {
-                editor: new Editor()
+        computed: {
+            content: {
+                get() {
+                    return this.$store.state.editor.Content;
+                },
+                set(c) {
+                    this.$store.commit("setContent", c);
+                }
             }
         },
         methods: {
+            async setFontSize(){
+                this.$alert(this.$createElement('div', {}, "htmlStr"), '附件', {
+                    dangerouslyUseHTMLString: true,
+                    confirmButtonText: '关闭'
+                })
+            },
             async onSave() {
-                console.log("baocun");
-               await this.editor.Save();
+                await this.$store.state.editor.Save();
             }
         },
         async mounted() {
-            await this.editor.Open(this.$store.state.workDir,gfilename);
+            await this.$store.dispatch("openEditor", gfilename);
         }
     }
 </script>
@@ -33,7 +48,7 @@
 <style scoped>
     .main-page {
         overflow: scroll;
-        height: 50%;
+        height: 800px;
     }
 
 </style>

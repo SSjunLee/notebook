@@ -1,4 +1,4 @@
-import {ipcMain} from 'electron'
+import {ipcMain,dialog} from 'electron'
 
 const fs = require("fs");
 const normalHandler = (method) => {
@@ -25,7 +25,6 @@ const registerFileMethods = () => {
         registerNormalHandler(method);
     });
     ipcMain.handle('isDirectory', (ev,arg) => {
-        console.log('isDirectory',arg);
         return new Promise((resolve, reject) => {
             fs.stat(arg, (err, res) => {
                 //console.log(err,res);
@@ -40,6 +39,11 @@ const registerFileMethods = () => {
                 }
             })
         })
+    });
+    ipcMain.handle('dialog',async (ev,cfg)=>{
+        return await  dialog.showOpenDialog({
+            ...cfg
+        });
     })
 };
 

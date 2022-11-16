@@ -7,15 +7,20 @@ export default class Editor {
     currentFile = null;
     Content = "";
 
-    async Open(workDir,filename) {
+    async Open(filename) {
         try {
-            this.workDir = workDir;
-            this.currentFile = {"path": pathResolve(filename)};
+            this.currentFile = {path: pathResolve(filename)};
             this.Content =  await readFile(filename);
         } catch (e) {
             console.log(e);
             errorMessage(e.toString());
         }
+    }
+
+    Clear(){
+        this.currentFile = null;
+        this.Content = "";
+        this.workDir = "";
     }
 
     async Save() {

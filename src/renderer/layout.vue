@@ -1,6 +1,6 @@
 <template>
     <div class="layout">
-        <el-container ref="main_page">
+        <el-container>
             <navbar></navbar>
             <el-container>
                 <aside-page></aside-page>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import navbar from '@/components/navbar'
+    import navbar from '@/components/navbar/index'
     import AsidePage from "@/components/aside/index";
     export default {
         name: "layout",

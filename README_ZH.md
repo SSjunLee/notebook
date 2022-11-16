@@ -48,3 +48,6 @@ yarn build
 <img src="启动逻辑图.jpg">
 
 # [更新日志](CHANGELOG.md)
+- 1
+- 2
+- 3

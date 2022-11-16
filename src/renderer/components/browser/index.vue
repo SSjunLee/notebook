@@ -1,7 +1,6 @@
 <template>
     <div class="browser">
-        文件浏览{{this.$store.state.workDir}}
-        <el-tree ref="tree"
+        <el-tree :highlight-current="true" ref="tree"
                  :load="loadNode"
                  lazy
                  :props="defaultProps" @node-click="handleNodeClick"
@@ -12,7 +11,7 @@
 
 <script>
     import {readDir, isDirectory} from '@/api/file.js'
-    import {pathJoin, getNameFromPath} from '@/util/path'
+    import {pathJoin, getNameFromPath, suffixWith} from '@/util/path'
 
     export default {
         name: "browser",
@@ -28,12 +27,12 @@
         },
 
         computed: {
-            workDir: function () {
-                return this.$store.state.workDir;
+            workDir() {
+                return this.$store.state.editor.workDir;
             }
         },
         watch: {
-            workDir: async function (newData) {
+            workDir(newData) {
                 if (newData !== "") {
                     this.forceRender();
                 }
@@ -50,7 +49,6 @@
             },
 
             async loadNode(node, resolve) {
-                console.log(node);
                 if (node.level === 0) {
                     const name = getNameFromPath(this.workDir);
                     return resolve([{name: name, path: this.workDir, leaf: false}]);
@@ -59,22 +57,22 @@
                 let cs = [];
                 for (let i = 0; i < files.length; i++) {
                     const fi = files[i];
+                    if(fi[0] === '.')continue;
                     const path = pathJoin(node.data.path, fi);
                     const isDir = await isDirectory(path);
+                    if (!isDir && fi.lastIndexOf(".md") === -1) continue;
                     cs.push({name: fi, leaf: !isDir, path});
                 }
                 return resolve(cs);
             },
 
 
-            async handleNodeClick(data) {
-                // console.log(data);
-            },
-
-
-            async loadDir() {
-                const tree = await this.dfs(this.workDir);
-                this.$set(this.data, 0, tree);
+            async handleNodeClick(node) {
+                const path = node.path;
+                const is = await isDirectory(path);
+                if (!is) {
+                    await this.$store.dispatch("openEditor", path);
+                }
             },
 
             async dfs(path) {

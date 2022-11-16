@@ -14,7 +14,7 @@ export const readFile = async (arg) => {
 
 
 export const writeFile = async (arg, content) => {
-    return  await ipc.invoke("writeFile", arg, content);
+    return await ipc.invoke("writeFile", arg, content);
 };
 
 
@@ -27,3 +27,6 @@ export const isDirectory = async (path) => {
 };
 
 
+export const dialog = async (cfg) => {
+    return await ipc.invoke("dialog", cfg);
+};

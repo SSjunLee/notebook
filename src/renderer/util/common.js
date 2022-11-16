@@ -47,5 +47,7 @@ export function errorMessage(msg) {
 export function installNotification($vm) {
     notifyHandler = (args) => {
         $vm.$notify(args);
-    }
+    };
 }
+
+
