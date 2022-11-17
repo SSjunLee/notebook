@@ -1,6 +1,6 @@
 <template>
     <div class="main-page">
-        <mavon-editor v-if="enable" :style="{fontSize:RenderFontSize}" :fontSize="fontSize" @save="onSave"
+        <mavon-editor class="editor" v-if="enable" :style="{fontSize:RenderFontSize}" :fontSize="fontSize" @save="onSave"
                       v-model="editorContent"
                       boxShadowStyle="">
             <template slot="left-toolbar-before">
@@ -19,6 +19,8 @@
 
 <script>
     import FontSetting from '@/components/font-setting'
+    import {saveDialog, exits, writeFile} from "@/api/file";
+    import {warningMessage} from '@/util/common'
 
     export default {
         name: "mainPage",
@@ -52,7 +54,20 @@
         },
         methods: {
             async onSave() {
-                await this.$store.state.editor.Save();
+                if (this.editor.IsNewFile()) {
+                    const {canceled, filePath} = await saveDialog({
+                        title: "保存"
+                    });
+                    if (canceled) return;
+                    if (await exits(filePath)) {
+                        warningMessage("文件已存在");
+                        return;
+                    }
+                    this.$store.commit("visEditor", {
+                        currentFile: {path: filePath},
+                    });
+                }
+                await this.editor.Save();
             }
         }
     }
@@ -62,6 +77,9 @@
     .main-page {
         overflow: scroll;
         height: 800px;
+    }
+    .editor{
+        height: 100%;
     }
 
 </style>

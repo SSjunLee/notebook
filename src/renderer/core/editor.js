@@ -9,6 +9,10 @@ export default class Editor {
     FontSize = "14px";
     RenderFontSize = "14px";
 
+    IsNewFile(){
+        return this.currentFile == null;
+    }
+
     async Open(filename) {
         try {
             this.currentFile = {path: pathResolve(filename)};

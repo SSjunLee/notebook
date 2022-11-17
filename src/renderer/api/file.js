@@ -1,4 +1,5 @@
 import {ipcRenderer} from 'electron'
+import process from "process";
 
 
 const ipc = ipcRenderer;
@@ -26,7 +27,35 @@ export const isDirectory = async (path) => {
     return await ipc.invoke("isDirectory", path);
 };
 
+export const exits = async (path) => {
+    try {
+        const stat = await ipc.invoke("stat", path);
+        return stat != null;
+    } catch (e) {
+        return false;
+    }
+};
+
 
 export const dialog = async (cfg) => {
+    if (!cfg.hasOwnProperty('defaultPath')) {
+        cfg.defaultPath = defaultWorkDir();
+    }
     return await ipc.invoke("dialog", cfg);
+};
+
+export const saveDialog = async (cfg) => {
+    if (!cfg.hasOwnProperty('defaultPath')) {
+        cfg.defaultPath = defaultWorkDir();
+    }
+    if (!cfg.hasOwnProperty("filters")) {
+        cfg.filters = [
+            {name: 'markdown', extensions: ['md']}
+        ];
+    }
+    return await ipc.invoke("saveDialog", cfg);
+};
+
+export const defaultWorkDir = () => {
+    return process.cwd();
 };

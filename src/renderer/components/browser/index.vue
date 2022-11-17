@@ -49,6 +49,7 @@
             },
 
             async loadNode(node, resolve) {
+                if(this.workDir === "")return;
                 if (node.level === 0) {
                     const name = getNameFromPath(this.workDir);
                     return resolve([{name: name, path: this.workDir, leaf: false}]);

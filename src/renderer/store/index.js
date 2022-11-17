@@ -5,26 +5,32 @@ import Editor from "@/core/editor";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    state(){
+    state() {
         return {
-            editor:new Editor(),
+            editor: new Editor(),
         }
     },
-    mutations:{
-        setWorkDir(state,d){
+    mutations: {
+        visEditor(state, args) {
+            console.log("vis");
+            Object.assign(state.editor,args);
+            console.log(state.editor);
+        },
+
+        setWorkDir(state, d) {
             state.editor.Clear();
             state.editor.workDir = d;
         },
-        setContent(state,d){
+        setContent(state, d) {
             state.editor.Content = d;
         },
-        setFontSize(state,[e,r]){
+        setFontSize(state, [e, r]) {
             state.editor.FontSize = e;
             state.editor.RenderFontSize = r;
         }
     },
-    actions:{
-        async openEditor({state},filename){
+    actions: {
+        async openEditor({state}, filename) {
             await state.editor.Open(filename);
         }
     }

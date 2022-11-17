@@ -7,12 +7,12 @@
 </template>
 
 <script>
+  import {defaultWorkDir} from "@/api/file";
   import {installNotification} from "@/util/common"
-  const rootDir = "D:\\code\\qianduan\\ljn\\notebook";
 export default {
     mounted() {
       installNotification(this);
-      this.$store.commit("setWorkDir",rootDir);
+      this.$store.commit("setWorkDir",defaultWorkDir());
     }
 };
 </script>

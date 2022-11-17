@@ -1,4 +1,4 @@
-import {ipcMain,dialog} from 'electron'
+import {ipcMain, dialog} from 'electron'
 
 const fs = require("fs");
 const normalHandler = (method) => {
@@ -21,27 +21,28 @@ const registerNormalHandler = (method) => {
 
 
 const registerFileMethods = () => {
-    ['open', 'readdir', 'readFile', 'writeFile'].map(method => {
+    ['stat', 'open', 'readdir', 'readFile', 'writeFile'].map(method => {
         registerNormalHandler(method);
     });
-    ipcMain.handle('isDirectory', (ev,arg) => {
+    ipcMain.handle('isDirectory', (ev, arg) => {
         return new Promise((resolve, reject) => {
             fs.stat(arg, (err, res) => {
-                //console.log(err,res);
-                if(err){
-                    console.log("报错...");
-                    console.log("参数为",arg);
-                    console.log("错误码为",err);
-                    console.log(arg,err,res);
+                if (err) {
                     reject(err)
-                }else{
-                    resolve(res&&res.isDirectory());
+                } else {
+                    resolve(res && res.isDirectory());
                 }
             })
         })
     });
-    ipcMain.handle('dialog',async (ev,cfg)=>{
-        return await  dialog.showOpenDialog({
+    ipcMain.handle('dialog', async (ev, cfg) => {
+        return await dialog.showOpenDialog({
+            ...cfg
+        });
+    });
+
+    ipcMain.handle('saveDialog', async (ev, cfg) => {
+        return await dialog.showSaveDialog({
             ...cfg
         });
     })
