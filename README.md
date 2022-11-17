@@ -79,3 +79,8 @@ This project was generated with [electron-vue](https://github.com/SimulatedGREG/
 Manage interface code address [here](https://github.com/PanJiaChen/electron-vue-admin)
 
 # [CHANGELOG](CHANGELOG.md)
+- 1
+- 2
+- 3
+- 
+

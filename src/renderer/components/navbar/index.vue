@@ -37,7 +37,7 @@
         },
         methods: {
             handleSelect(key) {
-                service(key);
+                service(key)
             }
         },
         mounted() {

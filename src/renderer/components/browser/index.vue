@@ -75,23 +75,6 @@
                 }
             },
 
-            async dfs(path) {
-                const that = this;
-                const name = getNameFromPath(path);
-                const node = {name};
-                if (await isDirectory(path)) {
-                    const dirs = await readDir(path);
-                    dirs.map(async son => {
-                        const c = await that.dfs(pathJoin(path, son));
-                        if (!node.children) {
-                            that.$set(node, "children", []);
-                        }
-                        node.children.push(c);
-                    });
-                }
-                return node;
-
-            },
         }
     }
 </script>

@@ -17,11 +17,15 @@ export default new Vuex.Store({
         },
         setContent(state,d){
             state.editor.Content = d;
+        },
+        setFontSize(state,[e,r]){
+            state.editor.FontSize = e;
+            state.editor.RenderFontSize = r;
         }
     },
     actions:{
         async openEditor({state},filename){
-            await state.editor.Open(filename)
+            await state.editor.Open(filename);
         }
     }
 })

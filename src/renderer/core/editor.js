@@ -6,6 +6,8 @@ export default class Editor {
     workDir = "";
     currentFile = null;
     Content = "";
+    FontSize = "14px";
+    RenderFontSize = "14px";
 
     async Open(filename) {
         try {
