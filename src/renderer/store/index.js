@@ -2,23 +2,34 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Editor from "@/core/editor";
 
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state() {
         return {
             editor: new Editor(),
+            enableConfigRemoteRepo: false,
+            user: null,
+            tokenList: [],
         }
     },
     mutations: {
+        setTokenList(state, v) {
+            this.state.tokenList = v;
+        },
+        setUser(state, v) {
+            this.state.user = v;
+        },
+        setEnableConfigRemoteRepo(state, v) {
+            state.enableConfigRemoteRepo = v;
+        },
         visEditor(state, args) {
-            console.log("vis");
-            Object.assign(state.editor,args);
-            console.log(state.editor);
+            Object.assign(state.editor, args);
         },
 
         setWorkDir(state, d) {
-            state.editor.Clear();
+            state.editor.Clear(); //清空编辑器内容
             state.editor.workDir = d;
         },
         setContent(state, d) {

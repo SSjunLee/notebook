@@ -1,6 +1,9 @@
 <template>
     <div class="nav">
         <el-header>
+            <div class="nav-top">
+               <avatar-box></avatar-box>
+            </div>
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                 <el-submenu index="file">
                     <template slot="title">文件</template>
@@ -9,26 +12,27 @@
                 </el-submenu>
                 <el-submenu index="2">
                     <template slot="title">功能</template>
-                    <el-menu-item index="2-1">选项1</el-menu-item>
-                    <el-menu-item index="2-2">选项2</el-menu-item>
-                    <el-menu-item index="2-3">选项3</el-menu-item>
-                    <el-submenu index="2-4">
-                        <template slot="title">选项4</template>
-                        <el-menu-item index="2-4-1">选项1</el-menu-item>
-                        <el-menu-item index="2-4-2">选项2</el-menu-item>
-                        <el-menu-item index="2-4-3">选项3</el-menu-item>
-                    </el-submenu>
+                    <github-token>
+                        <el-menu-item index="github">同步github</el-menu-item>
+                    </github-token>
                 </el-submenu>
             </el-menu>
         </el-header>
+        <repo-setting></repo-setting>
     </div>
 </template>
 
 <script>
     import service from "@/core/service";
+    import RepoSetting from '@/components/repo-setting/index'
+    import AvatarBox from '@/components/avatar/index'
+    import GithubToken from '@/components/github-token'
 
     export default {
         name: "navbar",
+        components: {
+            RepoSetting,AvatarBox,GithubToken
+        },
         data() {
             return {
                 activeIndex: '1',
@@ -37,7 +41,7 @@
         },
         methods: {
             handleSelect(key) {
-                service(key)
+                service(key);
             }
         },
         mounted() {
@@ -47,5 +51,11 @@
 </script>
 
 <style scoped>
+    .nav-top {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
 
 </style>

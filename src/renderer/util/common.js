@@ -51,3 +51,10 @@ export function installNotification($vm) {
 }
 
 
+export const copyAttr = (dst, src) => {
+    for (let attr in src) {
+        if (dst.hasOwnProperty(attr)) {
+            dst[attr] = src[attr];
+        }
+    }
+};

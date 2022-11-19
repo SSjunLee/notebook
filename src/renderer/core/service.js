@@ -1,6 +1,7 @@
 import {dialog} from "@/api/file";
 import path from 'path'
 import store from '@/store'
+import {Github} from "@/core/github";
 
 const fileCfg = {
     properties: ['openFile', 'promptToCreate'],
@@ -25,14 +26,22 @@ const openFile = async () => {
 const openWorkspace = async () => {
     const {canceled, filePaths} = await dialog(DirCfg);
     if (canceled || filePaths.length === 0) return;
-    await store.commit("setWorkDir", filePaths[0]);
+    store.commit("setWorkDir", filePaths[0]);
+};
+
+
+
+const github = async ()=>{
+    const l = new Github();
+    await l.login(process.env.GITHUB);
+    store.commit("setEnableConfigRemoteRepo",true);
 };
 
 const serviceMap = {
     "open-file": openFile,
     "open-workspace": openWorkspace,
+    "github":github,
 };
-
 
 export default (name, ...args) => {
     serviceMap[name](...args).then(() => {

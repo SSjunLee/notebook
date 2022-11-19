@@ -1,6 +1,7 @@
 <template>
     <div class="main-page">
-        <mavon-editor class="editor" v-if="enable" :style="{fontSize:RenderFontSize}" :fontSize="fontSize" @save="onSave"
+        <mavon-editor class="editor" v-if="enable" :style="{fontSize:RenderFontSize}"
+                      :fontSize="fontSize" @save="onSave"
                       v-model="editorContent"
                       boxShadowStyle="">
             <template slot="left-toolbar-before">

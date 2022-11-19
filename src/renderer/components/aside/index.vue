@@ -1,12 +1,7 @@
 <template>
-    <div>
-        <el-aside  class = "aside">
-            <el-tabs :tab-position="tabPosition" style="height: 200px;">
-                <el-tab-pane label="文件浏览">
-                    <browser></browser>
-                </el-tab-pane>
-                <el-tab-pane label="目录">目录</el-tab-pane>
-            </el-tabs>
+    <div class ="aside-wrapper">
+        <el-aside class="aside">
+            <browser></browser>
         </el-aside>
     </div>
 </template>
@@ -28,6 +23,11 @@
     .aside{
         width: 200px;
         height: 100%;
+        border-right-width: 5px;
+        border-right-style: ridge;
+        border-color: #CCCCCC #EFEFF4;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+
     }
 
 </style>

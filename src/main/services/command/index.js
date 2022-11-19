@@ -1,5 +1,5 @@
 import {ipcMain, dialog} from 'electron'
-
+import Store from "electron-store";
 const fs = require("fs");
 const normalHandler = (method) => {
     return (ev, ...args) => {
@@ -21,7 +21,7 @@ const registerNormalHandler = (method) => {
 
 
 const registerFileMethods = () => {
-    ['stat', 'open', 'readdir', 'readFile', 'writeFile'].map(method => {
+    ['stat', 'open', 'readdir', 'readFile', 'writeFile','mkdir'].map(method => {
         registerNormalHandler(method);
     });
     ipcMain.handle('isDirectory', (ev, arg) => {
@@ -48,7 +48,7 @@ const registerFileMethods = () => {
     })
 };
 
-
 export default function () {
+    Store.initRenderer();
     registerFileMethods();
 }

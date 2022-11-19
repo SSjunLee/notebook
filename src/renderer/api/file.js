@@ -8,6 +8,10 @@ export const readDir = async (dirname) => {
     return ipc.invoke("readdir", dirname);
 };
 
+export const mkdir = async (dirname) => {
+    return ipc.invoke("mkdir", dirname);
+};
+
 export const readFile = async (arg) => {
     const res = await ipc.invoke("readFile", arg, "utf8");
     return res.toString();
@@ -57,5 +61,8 @@ export const saveDialog = async (cfg) => {
 };
 
 export const defaultWorkDir = () => {
-    return process.cwd();
+    if(process.env.NODE_ENV === 'production')
+        return process.cwd();
+    else
+        return process.env.TEST_PATH;
 };
