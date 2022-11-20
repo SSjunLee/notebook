@@ -1,4 +1,5 @@
 import {dialog} from "@/api/file";
+import {saveGit as apiSaveGit} from '@/api/git'
 import path from 'path'
 import store from '@/store'
 import {Github} from "@/core/github";
@@ -30,20 +31,35 @@ const openWorkspace = async () => {
 };
 
 
-
-const github = async ()=>{
-    const l = new Github();
+const l = new Github();
+const github = async () => {
     await l.login(process.env.GITHUB);
-    store.commit("setEnableConfigRemoteRepo",true);
+    store.commit("setEnableConfigRemoteRepo", true);
 };
+
+export const loginToken = async (token) => {
+    await l.login(token);
+};
+
+
+export const saveGit = async () => {
+    if (!store.state.editor.workDir) {
+        throw new Error('请打开一个工作空间');
+    }
+    const p = store.state.editor.workDir;
+    await apiSaveGit(p);
+};
+
 
 const serviceMap = {
     "open-file": openFile,
     "open-workspace": openWorkspace,
-    "github":github,
+    "github": github,
+    "save-git": saveGit,
 };
 
 export default (name, ...args) => {
-    serviceMap[name](...args).then(() => {
-    });
+    if (serviceMap[name])
+        serviceMap[name](...args).then(() => {
+        });
 }

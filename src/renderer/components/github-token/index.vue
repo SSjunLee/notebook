@@ -3,7 +3,7 @@
         <el-popover
                 placement="top-start"
                 title="选择你的token"
-                trigger="hover"
+                trigger="click"
         >
             <el-table
                     highlight-current-row
@@ -23,6 +23,10 @@
                 >
                 </el-table-column>
             </el-table>
+            <div class="addToken-wrapper">
+                <el-input type="text" v-model="token"></el-input>
+                <el-button class="addToken-btn" @click="addToken" type="primary">添加token</el-button>
+            </div>
             <div slot="reference">
                 <slot></slot>
             </div>
@@ -32,8 +36,16 @@
 </template>
 
 <script>
+    import {loginToken} from "@/core/service";
+    import {infoMessage, errorMessage, successMessage} from "@/util/common";
+
     export default {
         name: "GithubToken",
+        data() {
+            return {
+                token: ''
+            }
+        },
         computed: {
             tokenList() {
                 return this.$store.state.tokenList;
@@ -48,12 +60,37 @@
             }
         }, methods: {
             handleCurrentChange(v) {
-                this.$store.commit("setUser",v);
+                this.$store.commit("setUser", v);
+            },
+            async addToken() {
+                try {
+                    if (this.tokenList && this.tokenList.find((item) => {
+                        return item.token === this.token;
+                    })) {
+                        infoMessage("token 已添加...");
+                        return;
+                    }
+                    await loginToken(this.token);
+                    successMessage("添加成功");
+                } catch (e) {
+                    console.log(e);
+                    errorMessage("token 错误");
+                    this.token = "";
+                }
             }
         }
     }
 </script>
 
 <style scoped>
+    .addToken-wrapper {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .addToken-btn {
+        margin-left: 20px;
+    }
 
 </style>

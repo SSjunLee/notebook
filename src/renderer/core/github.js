@@ -68,7 +68,7 @@ export class Github {
             },
             timeout: 3000
         });
-        this.currentUser = this.getUser(token);
+        this.currentUser = await this.getUser(token);
 
     }
 

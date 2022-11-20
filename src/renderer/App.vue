@@ -12,6 +12,7 @@
   import {installNotification} from "@/util/common"
   import {loadTokenList} from "@/core/github";
   import db from '@/core/db'
+
   Vue.prototype.$db = db;
 export default {
     mounted() {

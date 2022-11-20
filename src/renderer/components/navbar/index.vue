@@ -11,10 +11,12 @@
                     <el-menu-item index="open-workspace">打开工作区</el-menu-item>
                 </el-submenu>
                 <el-submenu index="2">
-                    <template slot="title">功能</template>
+                    <template slot="title">github</template>
                     <github-token>
-                        <el-menu-item index="github">同步github</el-menu-item>
+                        <el-menu-item index="token">token管理</el-menu-item>
                     </github-token>
+                    <el-menu-item index="github">同步github</el-menu-item>
+                    <el-menu-item index="save-git">保存git</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-header>
