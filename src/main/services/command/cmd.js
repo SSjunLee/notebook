@@ -2,20 +2,20 @@ import {spawn} from 'child_process'
 
 const encoder = new TextEncoder();
 export default class Command {
-    ignoreData = false;
     executor = null;
+    msg = "";
+    error_msg = "";
 
     __createProcess() {
         return new Promise((resolve, reject) => {
             this.executor = spawn(this.cmd, this.args, this.opt);
             this.executor.on('error', (e) => {
-                console.warn(e);
+                console.error(`${this.msg} ${this.args} create error...`,e);
                 reject(e);
             });
             this.executor.on('spawn', () => {
-                this.valid = true;
                 resolve();
-            })
+            });
         })
     }
 
@@ -26,29 +26,26 @@ export default class Command {
     }
 
 
-     asyncExec() {
+    asyncExec() {
+        const that = this;
         return new Promise((resolve, reject) => {
-            this.__createProcess().then(()=>{
+            this.__createProcess().then(() => {
                 this.executor.on('close', (code => {
-                    if (this.ignoreData) {
-                        resolve(code);
+                    if (that.error_msg) {
+                        reject(that.error_msg);
+                    } else if (that.msg) {
+                        resolve(that.msg);
                     }
+                    resolve(code);
                 }));
                 this.executor.stdout.on('data', (data) => {
-                    data = data.toString();
-                    if (!this.ignoreData)
-                        resolve(encoder.encode(data));
+                    that.msg = encoder.encode(data.toString());
                 });
 
                 this.executor.stderr.on('data', (data) => {
-                    data = data.toString();
-                    console.error(data);
-                    reject(encoder.encode(data));
+                    that.error_msg = encoder.encode(data.toString())
                 });
-                setTimeout(()=>{
-                    resolve('success');
-                },3000)
-            }).catch(e=>{
+            }).catch(e => {
                 reject(e);
             });
         })

@@ -24,9 +24,20 @@ const registerNormalHandler = (method) => {
 
 
 const registerFileMethods = (ipcMain) => {
-    ['stat', 'open', 'readdir', 'readFile', 'writeFile', 'mkdir'].map(method => {
+    ['stat', 'open', 'readdir', 'readFile', 'writeFile', 'exits'].map(method => {
         registerNormalHandler(method);
     });
+
+    ipcMain.handle('mkdir', (ev, arg) => {
+      return new Promise((resolve) => {
+          fs.mkdir(arg, (err, _) => {
+              if (err)
+                  console.log(err);
+              resolve();
+          });
+      })
+    });
+
     ipcMain.handle('isDirectory', (ev, arg) => {
         return new Promise((resolve, reject) => {
             fs.stat(arg, (err, res) => {

@@ -75,6 +75,7 @@
                 } catch (e) {
                     console.log(e);
                     errorMessage("token 错误");
+                }finally {
                     this.token = "";
                 }
             }

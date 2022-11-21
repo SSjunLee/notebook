@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Editor from "@/core/editor";
 
+import db from "@/core/db";
 
 Vue.use(Vuex);
 
@@ -10,6 +11,7 @@ export default new Vuex.Store({
         return {
             editor: new Editor(),
             enableConfigRemoteRepo: false,
+            enableCreateRepo: false,
             user: null,
             tokenList: [],
         }
@@ -20,9 +22,13 @@ export default new Vuex.Store({
         },
         setUser(state, v) {
             this.state.user = v;
+            db.saveUser(v);
         },
         setEnableConfigRemoteRepo(state, v) {
             state.enableConfigRemoteRepo = v;
+        },
+        setEnableCreateRepo(state,v){
+          state.enableCreateRepo = v;
         },
         visEditor(state, args) {
             Object.assign(state.editor, args);
@@ -43,6 +49,14 @@ export default new Vuex.Store({
     actions: {
         async openEditor({state}, filename) {
             await state.editor.Open(filename);
+        }
+    },
+    getters: {
+        user: ({user}) => {
+            if (!user) {
+                user = db.getUser();
+            }
+            return user;
         }
     }
 })
