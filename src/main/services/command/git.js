@@ -25,7 +25,7 @@ export class Git {
     async pull(url) {
         this.gitpull = c(['pull', url, '--allow-unrelated-histories'], {cwd: this.path});
         const res = await this.gitpull.asyncExec();
-        console.log('======== git pull ========\n', res);
+        console.log('======== git pull ========\n', new TextDecoder().decode(res));
     }
 }
 
