@@ -7,7 +7,7 @@
                 :destroy-on-close="true"
                 width="100%">
             <div class="wrapper">
-                <el-table :data="repos" @current-change="select"  highlight-current-row>
+                <el-table :data="repos" @current-change="select" highlight-current-row>
                     <el-table-column label="仓库" prop="name"></el-table-column>
                     <el-table-column label="地址" prop="git_url"></el-table-column>
                     <el-table-column label="描述" prop="description"></el-table-column>
@@ -18,6 +18,7 @@
                 <create-repo></create-repo>
             </div>
             <div slot="footer" class="dialog-footer">
+                <el-button type="info" icon="el-icon-refresh" circle @click="refresh"></el-button>
                 <el-button type="primary" @click="submit">确 定</el-button>
             </div>
         </el-dialog>
@@ -28,10 +29,11 @@
     import CreateRepo from '@/components/create-repo'
     import db from '@/core/db'
     import {successMessage} from "@/util/common";
+    import {githubInstance} from "@/core/github";
 
     export default {
         name: "RepoSetting",
-        components:{
+        components: {
             CreateRepo
         },
         computed: {
@@ -50,7 +52,7 @@
         data() {
             return {
                 repos: [],
-                currentRepo:null,
+                currentRepo: null,
             }
         },
         async mounted() {
@@ -58,20 +60,24 @@
         },
         methods: {
             createRepo() {
-                this.$store.commit('setEnableCreateRepo',true);
+                this.$store.commit('setEnableCreateRepo', true);
             },
             select(p) {
                 this.currentRepo = p;
             },
-            async submit(){
-                if(this.currentRepo === ""){
+            async submit() {
+                if (this.currentRepo === "") {
                     this.enableConfigRemoteRepo = false;
                     return;
                 }
                 this.enableConfigRemoteRepo = false;
                 const localStore = await db.checkOrCreateStore(this.workDir);
-                localStore.set('remote_git',this.currentRepo);
+                localStore.set('remote_git', this.currentRepo);
                 successMessage('设置远程git仓成功');
+            },
+            async refresh() {
+                this.repos = await githubInstance.getUserRepos();
+                db.setRepos(this.repos);
             }
         },
     }

@@ -109,3 +109,5 @@ export const loadTokenList = () => {
     store.commit("setTokenList", tkList);
     return tkList;
 };
+
+export const githubInstance = new Github();

@@ -2,7 +2,7 @@ import {dialog} from "@/api/file";
 import {saveGit as apiSaveGit, syncGithub} from '@/api/git'
 import path from 'path'
 import store from '@/store'
-import {Github} from "@/core/github";
+import {githubInstance} from "@/core/github";
 import {errorMessage, successMessage} from "@/util/common";
 import db from "@/core/db";
 
@@ -32,9 +32,6 @@ const openWorkspace = async () => {
     if (canceled || filePaths.length === 0) return;
     store.commit("setWorkDir", filePaths[0]);
 };
-
-
-export const githubInstance = new Github();
 
 
 const github = async () => {

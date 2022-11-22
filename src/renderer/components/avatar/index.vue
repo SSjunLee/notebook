@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import {githubInstance} from "@/core/service";
+    import {githubInstance} from "@/core/github";
 
     export default {
         name: "AvatarBox",

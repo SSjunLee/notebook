@@ -29,12 +29,31 @@ class Db {
         return this.sys.get('user');
     }
 
-    getRepos() {
-        const user = this.getUser();
-        if (!user) return [];
-        const token = user.token;
+    setRepos(repos) {
+        const token = this.getCurrentUserToken();
         const info =  this.sys.get(token);
-        if(!info || !info.repos){
+        if (!info) {
+            console.error('null info');
+            return;
+        }
+        info.repos = repos;
+        this.sys.set(token,info);
+    }
+
+    getCurrentUserInfo() {
+        const token = this.getCurrentUserToken();
+        return this.sys.get(token);
+    }
+
+    getCurrentUserToken() {
+        const user = this.getUser();
+        if (!user) return "";
+        return user.token;
+    }
+
+    getRepos() {
+        const info = this.getCurrentUserInfo();
+        if (!info || !info.repos) {
             console.error('null info');
             return [];
         }
