@@ -30,7 +30,8 @@ export default class Command {
         const that = this;
         return new Promise((resolve, reject) => {
             this.__createProcess().then(() => {
-                this.executor.on('close', (code => {
+                this.executor.on('exit', ((code,sig) => {
+                    console.log('===== command exit =====\n',code,sig);
                     if (that.error_msg) {
                         reject(that.error_msg);
                     } else if (that.msg) {
