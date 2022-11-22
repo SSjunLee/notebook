@@ -24,7 +24,7 @@ const registerNormalHandler = (method) => {
 
 
 const registerFileMethods = (ipcMain) => {
-    ['stat', 'open', 'readdir', 'readFile', 'writeFile', 'exits'].map(method => {
+    ['stat', 'open', 'readdir', 'readFile', 'writeFile', 'exists'].map(method => {
         registerNormalHandler(method);
     });
 

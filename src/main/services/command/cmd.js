@@ -43,6 +43,7 @@ export default class Command {
                 });
 
                 this.executor.stderr.on('data', (data) => {
+                    console.error(data);
                     that.error_msg = encoder.encode(data.toString())
                 });
             }).catch(e => {

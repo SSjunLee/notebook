@@ -13,12 +13,19 @@
 </template>
 
 <script>
+    import {githubInstance} from "@/core/service";
+
     export default {
         name: "AvatarBox",
         computed:{
             user(){
                 return this.$store.getters.user;
-            },
+            }
+        },
+        mounted() {
+            if(this.user && !githubInstance.isLogin()){
+                githubInstance.login(this.user.token);
+            }
         }
     }
 </script>

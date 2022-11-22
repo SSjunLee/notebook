@@ -1,8 +1,11 @@
 import {dialog} from "@/api/file";
-import {saveGit as apiSaveGit} from '@/api/git'
+import {saveGit as apiSaveGit, syncGithub} from '@/api/git'
 import path from 'path'
 import store from '@/store'
 import {Github} from "@/core/github";
+import {errorMessage, successMessage} from "@/util/common";
+import db from "@/core/db";
+
 
 const fileCfg = {
     properties: ['openFile', 'promptToCreate'],
@@ -31,14 +34,29 @@ const openWorkspace = async () => {
 };
 
 
-const l = new Github();
+export const githubInstance = new Github();
+
+
 const github = async () => {
-    await l.login(process.env.GITHUB);
+    if (!githubInstance.isLogin()) {
+        throw new Error("请先登录github");
+    }
+    const workDir = store.state.editor.workDir;
+    const local = await db.checkOrCreateStore(workDir);
+    const remote = local.get('remote_git');
+    if (remote) {
+        let url = remote.git_url;
+        url = url.replace('git://github.com/','git@github.com:');
+        await apiSaveGit(workDir);
+        await syncGithub(workDir, url);
+        successMessage('同步成功！');
+        return;
+    }
     store.commit("setEnableConfigRemoteRepo", true);
 };
 
 export const loginToken = async (token) => {
-    await l.login(token);
+    await githubInstance.login(token);
 };
 
 
@@ -61,5 +79,8 @@ const serviceMap = {
 export default (name, ...args) => {
     if (serviceMap[name])
         serviceMap[name](...args).then(() => {
+        }).catch((e) => {
+            errorMessage(e);
+            console.error(e);
         });
 }

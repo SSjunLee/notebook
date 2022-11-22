@@ -13,6 +13,7 @@
   import {loadTokenList} from "@/core/github";
   import db from '@/core/db'
 
+  Vue.prototype.$bus = new Vue();
   Vue.prototype.$db = db;
 export default {
     mounted() {

@@ -64,6 +64,10 @@
                 this.currentRepo = p;
             },
             async submit(){
+                if(this.currentRepo === ""){
+                    this.enableConfigRemoteRepo = false;
+                    return;
+                }
                 this.enableConfigRemoteRepo = false;
                 const localStore = await db.checkOrCreateStore(this.workDir);
                 localStore.set('remote_git',this.currentRepo);

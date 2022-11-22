@@ -20,7 +20,7 @@
 
 <script>
     import FontSetting from '@/components/font-setting'
-    import {saveDialog, exits, writeFile} from "@/api/file";
+    import {saveDialog, exists} from "@/api/file";
     import {warningMessage} from '@/util/common'
 
     export default {
@@ -60,7 +60,7 @@
                         title: "保存"
                     });
                     if (canceled) return;
-                    if (await exits(filePath)) {
+                    if (await exists(filePath)) {
                         warningMessage("文件已存在");
                         return;
                     }
@@ -69,6 +69,7 @@
                     });
                 }
                 await this.editor.Save();
+                this.$bus.$emit('updateBrowser');
             }
         }
     }

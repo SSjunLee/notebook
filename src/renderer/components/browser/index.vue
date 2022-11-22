@@ -3,6 +3,8 @@
         <el-tree :highlight-current="true" ref="tree"
                  :load="loadNode"
                  lazy
+                 node-key="id"
+                 :default-expanded-keys="[0]"
                  :props="defaultProps" @node-click="handleNodeClick"
                  v-if="renderTree"
         ></el-tree>
@@ -38,6 +40,11 @@
                 }
             }
         },
+        mounted(){
+            this.$bus.$on('updateBrowser',()=>{
+                this.forceRender();
+            })
+        },
 
         methods: {
 
@@ -52,7 +59,7 @@
                 if(this.workDir === "")return;
                 if (node.level === 0) {
                     const name = getNameFromPath(this.workDir);
-                    return resolve([{name: name, path: this.workDir, leaf: false}]);
+                    return resolve([{id:0, name: name, path: this.workDir, leaf: false}]);
                 }
                 const files = await readDir(node.data.path);
                 let cs = [];

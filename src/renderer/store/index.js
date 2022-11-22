@@ -55,6 +55,7 @@ export default new Vuex.Store({
         user: ({user}) => {
             if (!user) {
                 user = db.getUser();
+
             }
             return user;
         }

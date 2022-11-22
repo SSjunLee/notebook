@@ -31,13 +31,8 @@ export const isDirectory = async (path) => {
     return await ipc.invoke("isDirectory", path);
 };
 
-export const exits = async (path) => {
-    try {
-        const stat = await ipc.invoke("stat", path);
-        return stat != null;
-    } catch (e) {
-        return false;
-    }
+export const exists = async (path) => {
+    return await ipc.invoke("exists", path);
 };
 
 

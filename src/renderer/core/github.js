@@ -28,6 +28,10 @@ export class Github {
     instance = null;
     currentUser = null;
 
+    isLogin(){
+        return this.accessToken !=='';
+    }
+
     async login(token) {
         this.accessToken = token;
         this.instance = axios.create({
