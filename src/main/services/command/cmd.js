@@ -10,7 +10,7 @@ export default class Command {
         return new Promise((resolve, reject) => {
             this.executor = spawn(this.cmd, this.args, this.opt);
             this.executor.on('error', (e) => {
-                console.error(`${this.msg} ${this.args} create error...`,e);
+                console.error(`${this.msg} ${this.args} create error...`, e);
                 reject(e);
             });
             this.executor.on('spawn', () => {
@@ -30,21 +30,27 @@ export default class Command {
         const that = this;
         return new Promise((resolve, reject) => {
             this.__createProcess().then(() => {
-                this.executor.on('exit', ((code,sig) => {
-                    console.log('===== command exit =====\n',code,sig);
-                    if (that.error_msg) {
-                        reject(that.error_msg);
-                    } else if (that.msg) {
+                this.executor.on('exit', ((code, sig) => {
+                    if (code === 0) {
                         resolve(that.msg);
+                    } else {
+                        if (that.error_msg) {
+                            reject(that.error_msg);
+                        } else if (sig) {
+                            console.error(`===== command failed ${sig}`);
+                            reject(sig);
+                        }else{
+                            console.error('command failed...');
+                            reject();
+                        }
                     }
-                    resolve(code);
                 }));
                 this.executor.stdout.on('data', (data) => {
                     that.msg = encoder.encode(data.toString());
                 });
 
                 this.executor.stderr.on('data', (data) => {
-                    console.error("===== command exec error =======\n",data.toString());
+                    console.error("===== command exec error =======\n", data.toString());
                     that.error_msg = encoder.encode(data.toString())
                 });
             }).catch(e => {
