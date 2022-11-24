@@ -42,6 +42,7 @@ const github = async () => {
     const local = await db.checkOrCreateStore(workDir);
     const remote = local.get('remote_git');
     if (remote) {
+        debugger;
         let url = remote.git_url;
         url = url.replace('git://github.com/','git@github.com:');
         await apiSaveGit(workDir);
