@@ -38,6 +38,7 @@ export const registerGitMethods = (ipcMain) => {
         return await git.commit();
     });
     ipcMain.handle('syncGithub', async (ev, path, url) => {
+        console.log('===== syncgithub ====\n',ev,path,url);
         git.path = path;
         await git.pull(url);
     });
