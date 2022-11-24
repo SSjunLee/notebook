@@ -18,10 +18,13 @@ export class Git {
 
 
     async commit() {
-        console.log('commit');
-        await this.gitinit.asyncExec();
-        await this.gitadd.asyncExec();
-        await this.gitcommit.asyncExec();
+        let r;
+        r = await this.gitinit.asyncExec();
+        console.log(r);
+        r = await this.gitadd.asyncExec();
+        console.log(r);
+        r = await this.gitcommit.asyncExec();
+        console.log(r);
     }
 
     async pull(url) {
