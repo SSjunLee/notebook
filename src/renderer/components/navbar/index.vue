@@ -46,9 +46,9 @@
             };
         },
         methods: {
-            handleSelect(key) {
+            async handleSelect(key) {
                 loadingInstance.open();
-                service(key);
+                await service(key);
                 loadingInstance.close();
             }
         },

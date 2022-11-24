@@ -26,7 +26,7 @@ export default class Command {
     }
 
     toString(){
-        return `${this.cmd} ${this.args} ${this.opt}`;
+        return `${this.cmd} ${this.args} ${this.opt.cwd}`;
     }
 
 

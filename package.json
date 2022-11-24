@@ -28,7 +28,7 @@
         "url": "http://127.0.0.1"
       }
     ],
-    "productName": "electron-vue-admin",
+    "productName": "notebook",
     "appId": "org.Sky.electron-vue",
     "directories": {
       "output": "build"

@@ -75,11 +75,12 @@ const serviceMap = {
     "save-git": saveGit,
 };
 
-export default (name, ...args) => {
+export default async (name, ...args) => {
     if (serviceMap[name])
-        serviceMap[name](...args).then(() => {
-        }).catch((e) => {
+        try {
+            await serviceMap[name](...args);
+        }catch(e){
             console.error(e);
             errorMessage('未知错误...');
-        });
+        }
 }
