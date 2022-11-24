@@ -18,6 +18,7 @@ export class Git {
 
 
     async commit() {
+        console.log('commit');
         await this.gitinit.asyncExec();
         await this.gitadd.asyncExec();
         await this.gitcommit.asyncExec();

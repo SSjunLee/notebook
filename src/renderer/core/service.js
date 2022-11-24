@@ -78,6 +78,6 @@ export default (name, ...args) => {
     if (serviceMap[name])
         serviceMap[name](...args).then(() => {
         }).catch((e) => {
-           errorMessage(new TextDecoder().decode(e));
+           console.error(e);
         });
 }

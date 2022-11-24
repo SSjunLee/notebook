@@ -12,5 +12,4 @@ export const apiSaveGit = async (path) => {
 
 export const apiSyncGithub = async (path, url)=>{
     await ipc.invoke('syncGithub',path,url);
-    console.log('成功....')
 };
