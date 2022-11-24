@@ -63,6 +63,7 @@ export const saveGit = async () => {
     }
     const p = store.state.editor.workDir;
     await apiSaveGit(p);
+    successMessage('保存成功！');
 };
 
 
