@@ -3,28 +3,27 @@ import Command from "./cmd";
 
 
 const c = (args, opt) => {
-    return new Command('git', args, opt);
+    return new Command('git', args, opt).asyncExec();
 };
 
 export class Git {
     constructor(path) {
-        this.path = path;
-        const opt = {cwd: this.path};
+        this.opt = {cwd: path};
         this.gitpull = null;
-        this.gitinit = c(['init'], opt);
-        this.gitadd = c(['add', '.'], opt);
-        this.gitcommit = c(['commit', '-m', 'my commit'], opt);
+        this.gitinit = c(['init'], this.opt);
+        this.gitadd = c(['add', '.'], this.opt);
+        this.gitcommit = c(['commit', '-m', 'my commit'], this.opt);
     };
 
-
     async commit() {
+        console.log(this.gitinit.opt);
         let r;
         r = await this.gitinit.asyncExec();
-        console.log(r);
+        console.log(new TextDecoder().decode(r));
         r = await this.gitadd.asyncExec();
-        console.log(r);
+        console.log(new TextDecoder().decode(r));
         r = await this.gitcommit.asyncExec();
-        console.log(r);
+        console.log(new TextDecoder().decode(r));
     }
 
     async pull(url) {
@@ -38,12 +37,12 @@ let git = new Git();
 
 export const registerGitMethods = (ipcMain) => {
     ipcMain.handle('saveGit', async (ev, path) => {
-        git.path = path;
+        git.opt.path = path;
         await git.commit();
     });
     ipcMain.handle('syncGithub', async (ev, path, url) => {
         console.log('===== syncgithub ====\n',ev,path,url);
-        git.path = path;
+        git.opt.path = path;
         await git.pull(url);
     });
 };
