@@ -1,5 +1,5 @@
 import Command from "./cmd";
-import de from "element-ui/src/locale/lang/de";
+
 
 
 const c = (args, opt) => {

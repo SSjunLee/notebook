@@ -44,7 +44,7 @@ const github = async () => {
     if (remote) {
         let url = remote.git_url;
         url = url.replace('git://github.com/','git@github.com:');
-        await apiSaveGit(workDir);
+        //await apiSaveGit(workDir);
         await syncGithub(workDir, url);
         successMessage('同步成功！');
         return;
@@ -78,7 +78,6 @@ export default (name, ...args) => {
     if (serviceMap[name])
         serviceMap[name](...args).then(() => {
         }).catch((e) => {
-            errorMessage(e);
-            console.error(e);
+           errorMessage(e.toString());
         });
 }
