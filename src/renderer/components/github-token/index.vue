@@ -37,7 +37,8 @@
 
 <script>
     import {loginToken} from "@/core/service";
-    import {infoMessage, errorMessage, successMessage} from "@/util/common";
+    import {infoMessage, errorMessage, successMessage,loadingInstance} from "@/util/common";
+
 
     export default {
         name: "GithubToken",
@@ -64,6 +65,7 @@
             },
             async addToken() {
                 try {
+                    loadingInstance.open();
                     if (this.tokenList && this.tokenList.find((item) => {
                         return item.token === this.token;
                     })) {
@@ -77,6 +79,7 @@
                     errorMessage("token 错误");
                 }finally {
                     this.token = "";
+                    loadingInstance.close();
                 }
             }
         }

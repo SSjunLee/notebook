@@ -40,16 +40,17 @@ const github = async () => {
     }
     const workDir = store.state.editor.workDir;
     const local = await db.checkOrCreateStore(workDir);
-    const remote = local.get('remote_git');
-    if (remote) {
-        let url = remote.git_url;
-        url = url.replace('git://github.com/','git@github.com:');
-        //await apiSaveGit(workDir);
-        await apiSyncGithub(workDir, url);
-        successMessage('同步成功！');
+    let remote = local.get('remote_git');
+    if(!remote){
+        store.commit('setEnableCreateRepo',true);
         return;
     }
-    store.commit("setEnableConfigRemoteRepo", true);
+    let url = remote.git_url;
+    url = url.replace('git://github.com/', 'git@github.com:');
+    //console.log(url);
+    //await apiSaveGit(workDir);
+    await apiSyncGithub(workDir, url);
+    successMessage('同步成功！');
 };
 
 export const loginToken = async (token) => {
@@ -78,6 +79,7 @@ export default (name, ...args) => {
     if (serviceMap[name])
         serviceMap[name](...args).then(() => {
         }).catch((e) => {
-           console.error(e);
+            console.error(e);
+            errorMessage('未知错误...');
         });
 }

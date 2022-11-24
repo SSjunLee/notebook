@@ -1,35 +1,37 @@
 import Command from "./cmd";
 
 
-
 const c = (args, opt) => {
-    return new Command('git', args, opt).asyncExec();
+    return new Command('git', args, opt);
 };
 
 export class Git {
     constructor(path) {
         this.opt = {cwd: path};
-        this.gitpull = null;
+        this.gitpull = c(['pull', 'origin','main', '--allow-unrelated-histories'], this.opt);
+        this.gitremoteadd = null;
+        this.gitbranch = c(['branch', '-M', 'main'], this.opt);
         this.gitinit = c(['init'], this.opt);
         this.gitadd = c(['add', '.'], this.opt);
         this.gitcommit = c(['commit', '-m', 'my commit'], this.opt);
+        this.gitpush = c(['push','--set-upstream','origin','main'],this.opt);
     };
 
     async commit() {
-        console.log(this.gitinit.opt);
-        let r;
-        r = await this.gitinit.asyncExec();
-        console.log(new TextDecoder().decode(r));
-        r = await this.gitadd.asyncExec();
-        console.log(new TextDecoder().decode(r));
-        r = await this.gitcommit.asyncExec();
-        console.log(new TextDecoder().decode(r));
+        await this.gitinit.asyncExec();
+        await this.gitadd.asyncExec();
+        await this.gitcommit.asyncExec();
     }
 
-    async pull(url) {
-        this.gitpull = c(['pull', url, '--allow-unrelated-histories'], {cwd: this.path});
-        const res = await this.gitpull.asyncExec();
-        console.log('======== git pull ========\n', new TextDecoder().decode(res));
+    async sync(url) {
+        this.gitremoteadd = c(['remote', 'add', 'origin', url], this.opt);
+        try {
+            await this.gitremoteadd.asyncExec();
+            await this.gitbranch.asyncExec();
+        }catch (e) {
+            console.log(e);
+        }
+        await this.gitpush.asyncExec();
     }
 }
 
@@ -37,12 +39,11 @@ let git = new Git();
 
 export const registerGitMethods = (ipcMain) => {
     ipcMain.handle('saveGit', async (ev, path) => {
-        git.opt.path = path;
+        git.opt.cwd = path;
         await git.commit();
     });
     ipcMain.handle('syncGithub', async (ev, path, url) => {
-        console.log('===== syncgithub ====\n',ev,path,url);
-        git.opt.path = path;
-        await git.pull(url);
+        git.opt.cwd = path;
+        await git.sync(url);
     });
 };

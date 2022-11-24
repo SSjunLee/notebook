@@ -9,7 +9,7 @@
 <script>
   import Vue from 'vue'
   import {defaultWorkDir} from "@/api/file";
-  import {installNotification} from "@/util/common"
+  import {installNotification,installLoading} from "@/util/common"
   import {loadTokenList} from "@/core/github";
   import db from '@/core/db'
 
@@ -19,6 +19,7 @@ export default {
     mounted() {
       loadTokenList();
       installNotification(this);
+      installLoading(this);
       this.$store.commit("setWorkDir",defaultWorkDir());
     }
 };

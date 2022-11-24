@@ -21,6 +21,7 @@
             </el-menu>
         </el-header>
         <repo-setting></repo-setting>
+        <create-repo></create-repo>
     </div>
 </template>
 
@@ -29,10 +30,13 @@
     import RepoSetting from '@/components/repo-setting/index'
     import AvatarBox from '@/components/avatar/index'
     import GithubToken from '@/components/github-token'
+    import CreateRepo from "@/components/create-repo/index";
+    import {loadingInstance} from "@/util/common";
 
     export default {
         name: "navbar",
         components: {
+            CreateRepo,
             RepoSetting,AvatarBox,GithubToken
         },
         data() {
@@ -43,7 +47,9 @@
         },
         methods: {
             handleSelect(key) {
+                loadingInstance.open();
                 service(key);
+                loadingInstance.close();
             }
         },
         mounted() {

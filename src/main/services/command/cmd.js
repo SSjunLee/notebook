@@ -25,6 +25,10 @@ export default class Command {
         this.opt = opt;
     }
 
+    toString(){
+        return `${this.cmd} ${this.args} ${this.opt}`;
+    }
+
 
     asyncExec() {
         const that = this;
@@ -34,24 +38,17 @@ export default class Command {
                     if (code === 0) {
                         resolve(that.msg);
                     } else {
-                        if (that.error_msg) {
-                            reject(that.error_msg);
-                        } else if (sig) {
-                            console.error(`===== command failed ${sig}`);
-                            reject(sig);
-                        }else{
-                            console.error('command failed...');
-                            reject();
-                        }
+                        reject(that.error_msg);
                     }
                 }));
                 this.executor.stdout.on('data', (data) => {
+                    console.log("===== command stdout =======\n", data.toString());
                     that.msg = encoder.encode(data.toString());
                 });
 
                 this.executor.stderr.on('data', (data) => {
-                    console.error("===== command stderr =======\n", data.toString());
-                    that.error_msg = encoder.encode(data.toString())
+                    console.error(this.toString(),"\n===== command stderr =======\n", data.toString());
+                    this.error_msg = data.toString();
                 });
             }).catch(e => {
                 reject(e);

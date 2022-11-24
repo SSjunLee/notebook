@@ -90,6 +90,9 @@ export class Github {
     async createRepo(conf) {
         const {data} = await this.instance.post(endpoints.current_user_repositories_url,conf);
         console.log(data);
+        const repo = new Repo();
+        copyAttr(repo,data);
+        return repo;
     }
 
 }
