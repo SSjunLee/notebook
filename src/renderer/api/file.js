@@ -1,6 +1,6 @@
 import {ipcRenderer} from 'electron'
 import process from "process";
-
+import store from '@/store'
 
 const ipc = ipcRenderer;
 
@@ -38,14 +38,14 @@ export const exists = async (path) => {
 
 export const dialog = async (cfg) => {
     if (!cfg.hasOwnProperty('defaultPath')) {
-        cfg.defaultPath = defaultWorkDir();
+        cfg.defaultPath = store.state.editor.workDir;
     }
     return await ipc.invoke("dialog", cfg);
 };
 
 export const saveDialog = async (cfg) => {
     if (!cfg.hasOwnProperty('defaultPath')) {
-        cfg.defaultPath = defaultWorkDir();
+        cfg.defaultPath = store.state.editor.workDir;
     }
     if (!cfg.hasOwnProperty("filters")) {
         cfg.filters = [
