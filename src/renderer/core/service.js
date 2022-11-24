@@ -1,5 +1,5 @@
 import {dialog} from "@/api/file";
-import {saveGit as apiSaveGit, syncGithub} from '@/api/git'
+import {apiSaveGit, apiSyncGithub} from '@/api/git'
 import path from 'path'
 import store from '@/store'
 import {githubInstance} from "@/core/github";
@@ -45,7 +45,7 @@ const github = async () => {
         let url = remote.git_url;
         url = url.replace('git://github.com/','git@github.com:');
         //await apiSaveGit(workDir);
-        await syncGithub(workDir, url);
+        await apiSyncGithub(workDir, url);
         successMessage('同步成功！');
         return;
     }
@@ -78,6 +78,6 @@ export default (name, ...args) => {
     if (serviceMap[name])
         serviceMap[name](...args).then(() => {
         }).catch((e) => {
-           errorMessage(e.toString());
+           errorMessage(new TextDecoder().decode(e));
         });
 }
