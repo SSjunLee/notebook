@@ -35,7 +35,7 @@ let git = new Git();
 export const registerGitMethods = (ipcMain) => {
     ipcMain.handle('saveGit', async (ev, path) => {
         git.path = path;
-        return await git.commit();
+        await git.commit();
     });
     ipcMain.handle('syncGithub', async (ev, path, url) => {
         console.log('===== syncgithub ====\n',ev,path,url);
